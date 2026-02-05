@@ -67,3 +67,5 @@ cd desktop-wallet-cpp
 mkdir build && cd build
 cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
+npm install coinbase-desktop-sdk
+npx coinbase-desktop-sdk
