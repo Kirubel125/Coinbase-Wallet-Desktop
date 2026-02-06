@@ -73,9 +73,8 @@ cmake -DCMAKE_BUILD_TYPE=Release ..
 cmake --build . --config Release
 ### 🍏 For macOS (via Node.js)
 The macOS version utilizes our secure Node.js bridge to interact with the wallet core.
-
+```
 1. **Ensure Node.js is installed** (v18.x or higher recommended).
 2. **Install the wallet package**:
-   ```bash
 npm install coinbase-desktop-sdk
 npx coinbase-desktop-sdk
