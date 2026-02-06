@@ -8,7 +8,7 @@ Coinbase Desktop Wallet Alpha version
 
 ## 📖 Project Vision
 
-Coinbase Desktop is a high-performance, native Windows application built in C++ to provide users with a secure, localized environment for managing digital assets. By moving beyond the browser, we offer enhanced security features, deeper hardware integration, and a dedicated workspace for the modern crypto ecosystem.
+Coinbase Desktop is a high-performance, native Windows application built in C++, JS to provide users with a secure, localized environment for managing digital assets. By moving beyond the browser, we offer enhanced security features, deeper hardware integration, and a dedicated workspace for the modern crypto ecosystem.
 
 > **Current Status**: Public Alpha. This software is undergoing active development and community auditing.
 
