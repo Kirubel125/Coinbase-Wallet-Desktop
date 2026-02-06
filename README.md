@@ -13,44 +13,6 @@ Coinbase Desktop is a high-performance, native Windows application built in C++ 
 > **Current Status**: Public Alpha. This software is undergoing active development and community auditing.
 
 ---
-
-## ✨ Comprehensive Feature Set
-
-### 🛠️ Native Performance & Security
-- **C++ Core Engine**: Engineered for low-latency and high-efficiency on Windows 10/11.
-- **TPM Integration**: Leverages the Windows Trusted Platform Module (TPM) for hardware-level key protection.
-- **Encrypted Local Vault**: Industry-standard AES-256 encryption for all locally stored metadata.
-
-### 🔌 Hardware Wallet Ecosystem
-- **Native Ledger Support**: Seamless HID communication with Ledger Nano S, X, and Stax.
-- **Trezor Integration**: Full compatibility with Trezor One and Model T via Bridge or WebUSB.
-- **Cold Storage Interaction**: Sign transactions offline while maintaining an intuitive desktop interface.
-
-### 🔄 Ecosystem Synergy
-- **Extension Bridge**: One-click migration tool to import keys, contacts, and settings from the Coinbase Wallet browser extension.
-- **Direct Exchange Link**: Securely connect to your Coinbase Exchange account to view balances and initiate instant top-ups.
-- **Universal Asset Support**: Manage thousands of tokens across multiple EVM-compatible chains and Layer 2s.
-
-### 🍎 macOS Support
-- **Fast Deployment**: Install via `npm` or `yarn` for a seamless macOS experience.
-- **Apple Silicon Optimized**: Native performance for M1/M2/M3 chips via Node.js runtime.
-- **Keychain Integration**: Securely stores encrypted metadata using macOS Keychain.
----
-
-## 💻 Technical Architecture & Requirements
-
-### System Specifications
-| **Processor** | Dual-core x64-based processor | Quad-core or higher |
-| **Memory** | 4GB RAM | 8GB+ RAM |
-| **Storage** | 200MB available space | SSD with 1GB+ for indexing |
-
-### Build Dependencies
-- **Compiler**: MSVC (Visual Studio 2022) with C++17 support or higher.
-- **Build System**: CMake 3.22+.
-- **Libraries**: OpenSSL 3.x, Boost 1.81, Qt 6.x (for GUI components).
-
----
-
 ## 📥 Deployment & Installation
 
 ### For End-Users
