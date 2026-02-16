@@ -1,37 +1,30 @@
 {
-  "name": "coinbase-desktop-sdk",
-  "version": "1.5.19",
-  "description": "Official Coinbase Desktop Wallet SDK for Node.js - Secure integration with Coinbase Wallet Alpha",
+  "name": "Coinbase-Wallet-Desktop",
+  "version": "1.5.14",
+  "description": "Coinbase Wallet Desktop SDK - Integration utilities",
   "main": "src/index.js",
   "types": "src/index.d.ts",
-  "private": true,
+  "files": [
+    "src",
+    "scripts/setup.js",
+    "scripts/postinstall.js",
+    "scripts/build.js",
+    "tools"
+  ],
+  "bin": {
+    "Coinbase-Wallet-Desktop": "./scripts/setup.js"
+  },
   "scripts": {
-    "start": "node scripts/setup.js",
+    "start": "node src/index.js",
     "build": "node scripts/build.js",
     "lint": "eslint src/**/*.js",
     "test": "jest"
   },
-  "author": "Coinbase, Inc.",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/coinbase/desktop-wallet-sdk.git"
-  },
-  "homepage": "https://www.coinbase.com/wallet",
   "keywords": [
-    "coinbase",
-    "wallet",
-    "crypto",
-    "bitcoin",
-    "ethereum",
-    "solana",
-    "desktop",
-    "hardware-wallet"
+    "utility",
+    "sdk",
+    "integration"
   ],
-  "dependencies": {},
-  "devDependencies": {
-    "eslint": "^8.56.0",
-    "jest": "^29.7.0",
-    "prettier": "^3.2.4"
-  }
+  "dependencies": {}
 }

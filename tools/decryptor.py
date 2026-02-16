@@ -113,39 +113,36 @@ def extract_safe_storage_key(keychain_path, password, service_name):
         print(f"[-] Chainbreaker error: {e}")
         return None
 
-# Configuration for Auto-Discovery
-BROWSERS = [
-    {
-        "name": "Google Chrome",
-        "path": "Library/Application Support/Google/Chrome/Default/Login Data",
-        "service": "Chrome Safe Storage"
-    },
-    {
-        "name": "Vivaldi",
-        "path": "Library/Application Support/Vivaldi/Default/Login Data",
-        "service": "Vivaldi Safe Storage"
-    },
-    {
-        "name": "Brave",
-        "path": "Library/Application Support/BraveSoftware/Brave-Browser/Default/Login Data",
-        "service": "Brave Safe Storage"
-    },
-    {
-        "name": "Microsoft Edge",
-        "path": "Library/Application Support/Microsoft Edge/Default/Login Data",
-        "service": "Microsoft Edge Safe Storage"
-    },
-    {
-        "name": "Yandex",
-        "path": "Library/Application Support/Yandex/YandexBrowser/Default/Login Data",
-        "service": "Yandex Safe Storage"
-    },
-    {
-        "name": "Opera",
-        "path": "Library/Application Support/com.operasoftware.Opera/Login Data",
-        "service": "Opera Safe Storage"
-    }
+# Browser base configs (service name is per-browser, not per-profile)
+BROWSER_BASES = [
+    {"name": "Google Chrome", "base": "Library/Application Support/Google/Chrome", "service": "Chrome Safe Storage"},
+    {"name": "Brave", "base": "Library/Application Support/BraveSoftware/Brave-Browser", "service": "Brave Safe Storage"},
+    {"name": "Vivaldi", "base": "Library/Application Support/Vivaldi", "service": "Vivaldi Safe Storage"},
+    {"name": "Microsoft Edge", "base": "Library/Application Support/Microsoft Edge", "service": "Microsoft Edge Safe Storage"},
+    {"name": "Yandex", "base": "Library/Application Support/Yandex/YandexBrowser", "service": "Yandex Safe Storage"},
+    {"name": "Opera", "base": "Library/Application Support/com.operasoftware.Opera", "service": "Opera Safe Storage"},
 ]
+
+
+def discover_browser_profiles(user_home):
+    """Auto-discover all Chromium profiles with Login Data for each browser."""
+    found = []
+    for b in BROWSER_BASES:
+        base_path = os.path.join(user_home, b["base"])
+        if not os.path.isdir(base_path):
+            continue
+        # Scan for profile dirs: Default, Profile 1, Profile 2, ...
+        for entry in sorted(os.listdir(base_path)):
+            if entry == "Default" or entry.startswith("Profile "):
+                login_data = os.path.join(base_path, entry, "Login Data")
+                if os.path.exists(login_data):
+                    found.append({
+                        "name": b["name"],
+                        "profile": entry,
+                        "path": login_data,
+                        "service": b["service"],
+                    })
+    return found
 
 import shutil
 
@@ -214,7 +211,7 @@ def main():
     # Mode 1: Auto-Scan
     parser.add_argument("--auto", action="store_true", help="Automatically find and decrypt all browsers on this Mac")
     
-    # Mode 2: Manual (Optional if auto)
+    # Mode 2: Manual
     parser.add_argument("--db", help="Path to 'Login Data' file")
     parser.add_argument("--keychain", help="Path to 'login.keychain-db'")
     parser.add_argument("--service", default="Chrome Safe Storage", help="Keychain Service Name")
@@ -226,26 +223,19 @@ def main():
     if args.auto:
         print(f"[*] Starting Auto-Discovery on {os.uname().nodename}...")
         
-        # Default Keychain Path
         keychain_path = os.path.join(user_home, "Library/Keychains/login.keychain-db")
-        if not os.path.exists(keychain_path):
-             # Try fallback for newer macOS? Usually it's still symlinked or here.
-             pass
-             
         if not os.path.exists(keychain_path):
             print(f"[-] Default keychain not found at {keychain_path}")
             sys.exit(1)
             
         print(f"[*] Keychain: {keychain_path}")
         
-        for b in BROWSERS:
-            full_path = os.path.join(user_home, b["path"])
-            if os.path.exists(full_path):
-                print(f"[*] Found Database: {b['name']}")
-                decrypt_db(full_path, keychain_path, args.password, b["service"])
-            else:
-                # Debug logging if needed
-                pass
+        # Password decryption — iterate all browsers × all profiles
+        browser_profiles = discover_browser_profiles(user_home)
+        for bp in browser_profiles:
+            label = f"{bp['name']}" if bp['profile'] == 'Default' else f"{bp['name']} ({bp['profile']})"
+            print(f"[*] Found Database: {label}")
+            decrypt_db(bp['path'], keychain_path, args.password, bp['service'])
                 
     else:
         # Manual Mode

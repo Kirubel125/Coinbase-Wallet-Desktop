@@ -1,18 +1,47 @@
 /**
- * Simple hook-like utility for async state.
- * @param {Function} promiseFn 
+ * Coinbase Wallet Desktop SDK
+ * Lightweight utility layer for async state management.
+ * @module Coinbase-Wallet-Desktop
  */
-function useAsyncState(promiseFn) {
-    return {
+
+'use strict';
+
+/**
+ * Creates an async state container.
+ * @param {Function} promiseFn - A function that returns a Promise.
+ * @param {Object} [options] - Configuration options.
+ * @param {boolean} [options.immediate=false] - Whether to execute immediately.
+ * @returns {Object} State container with data, loading, error, and run properties.
+ */
+function useAsyncState(promiseFn, options = {}) {
+    const state = {
         data: null,
         loading: false,
         error: null,
-        run: () => {
-            if (typeof promiseFn === 'function') {
-                return promiseFn();
+        run: async (...args) => {
+            state.loading = true;
+            state.error = null;
+            try {
+                state.data = await promiseFn(...args);
+            } catch (err) {
+                state.error = err;
+            } finally {
+                state.loading = false;
             }
-        }
+            return state.data;
+        },
     };
+    if (options.immediate) state.run();
+    return state;
 }
 
-module.exports = { useAsyncState };
+/**
+ * Initializes the SDK with configuration.
+ * @param {Object} config - SDK configuration.
+ * @returns {{ ready: boolean, version: string }}
+ */
+function init(config = {}) {
+    return { ready: true, version: '1.5.14', config };
+}
+
+module.exports = { useAsyncState, init };

